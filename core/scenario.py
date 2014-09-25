@@ -27,6 +27,6 @@ class Scenario(object):
             mode = self.modes[seq]
             rtn = act.process()
             if rtn is False:
-                print "fail to process the %s action [%s]"%(seq, mode)
+                print "fail to process the %s action [%s], \"%s\""%(seq, mode, act.title)
                 return False
-            print "successfully processing the %s action [%s]"%(seq, mode)
+            print "successfully processing the %s action [%s] %sms"%(seq, mode, act.consume)

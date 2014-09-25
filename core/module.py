@@ -18,19 +18,19 @@ class Module(object):
             
         return "%s, %s\n  %s"%(self.name, self.path, case_str)
 
-    def prepare(self):
+    def prepare(self, save_flag):
         self._read_case_list()
-        self._gen_testcases()
+        self._gen_testcases(save_flag)
 
-    def _gen_testcases(self):
+    def _gen_testcases(self, save_flag):
         for cname in self.case_list:
-            tc = self._get_testcase(cname)
+            tc = self._get_testcase(cname, save_flag)
             if tc is None:
                 print "fail to get test case for ", cname
                 continue
             self.testcases.append(tc)
 
-    def _get_testcase(self, cname):
+    def _get_testcase(self, cname, save_flag):
         try:
             case_module = importlib.import_module(
                 "modules.{0}.{1}".format(self.name, cname))
@@ -41,6 +41,8 @@ class Module(object):
             tc = getattr(case_module, attr_name)
             if isinstance(tc, TestCase):
                 #print "found test case ", cname
+                if save_flag is True:
+                    tc.set_save_flag(save_flag)
                 return tc
         return None
         

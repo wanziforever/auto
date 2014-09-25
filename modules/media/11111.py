@@ -8,15 +8,23 @@ tc = TestCase(os.path.splitext(os.path.basename(__file__))[0],
 
 send, recv, verify = make_test_wrappers(tc)
 
-@send(seq=1, title="11111, test to send a detail page request")
+@send(seq=1, url="http://api.vod.jamdeocloud.com/medias/api/media/10010000634")
 def send_detailpage():
-    return True
+    mode = "get"
+    post_dict = {
+        'isPhone': 'false',
+        'callback': 'parent.bdPass.api.login'
+        }
+    return mode, post_dict
 
 
-@recv(seq=2, title="11111, test to receive a detail page message")
-def recv_detailage():
-    return True
+@recv(seq=2, title="")
+def recv_detailage(data):
+    # some handling to deal with the response data
+    return True, data
 
-@verify(seq=3, title="11111, test to verify a detail page message")
-def verify_detailpage():
-    return True
+@verify(seq=3, title="")
+def verify_detailpage(new, old):
+    if new == old:
+        return True
+    return False

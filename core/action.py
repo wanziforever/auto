@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from time import time
+
 def null_callback():
     print "null callback"
     return False
@@ -22,7 +24,10 @@ class Action(object):
         
     def process(self):
         try:
+            start = time() * 1000
             ret = self.callback()
+            end = time() * 1000
+            self.consume = end - start
             return ret
         except Exception, e:
             print e
